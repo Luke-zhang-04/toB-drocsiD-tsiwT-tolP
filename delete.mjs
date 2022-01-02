@@ -1,9 +1,7 @@
+import "./dotenv.mjs"
 import Discord from "discord.js"
-import dotenv from "dotenv"
 
 const botId = "922575933515395092"
-
-dotenv.config()
 
 const client = new Discord.Client({
     intents: ["DIRECT_MESSAGES", "GUILDS", "GUILD_MESSAGES", "GUILD_PRESENCES", "GUILD_MEMBERS"],

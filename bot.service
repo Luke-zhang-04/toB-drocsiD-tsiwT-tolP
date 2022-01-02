@@ -1,0 +1,13 @@
+[Unit]
+Description=Joke bot
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+ExecStart=node /home/ubuntu/Documents/assassin/delete.mjs
+
+[Install]
+WantedBy=multi-user.target
