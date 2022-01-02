@@ -16,6 +16,7 @@ export const onMessageUpdate = async (message) => {
 
 /** @param {{[key: string]: import('discord.js').Message}} message */
 export const onMessageCreate = async (message) => {
+    console.log("HERE")
     if (message.author.id === botId) {
         if (message.content.startsWith("Did you think I would @ everyone?")) {
             setTimeout(async () => {
@@ -33,11 +34,6 @@ export const onMessageCreate = async (message) => {
                     await message.delete()
                 } catch {}
             }
-        }
-        if (message.deletable) {
-            try {
-                await message.delete()
-            } catch {}
         }
     }
 }

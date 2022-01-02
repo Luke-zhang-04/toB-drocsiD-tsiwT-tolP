@@ -55,12 +55,12 @@ const getStatusFromMode = () => {
     }
 }
 
-client.on("messageUpdate", async () => {
-    await modes[mode]?.onMessageUpdate?.()
+client.on("messageUpdate", async (...args) => {
+    await modes[mode]?.onMessageUpdate?.(...args)
 })
 
-client.on("messageCreate", async () => {
-    await modes[mode]?.onMessageCreate?.()
+client.on("messageCreate", async (...args) => {
+    await modes[mode]?.onMessageCreate?.(...args)
 })
 
 client.on("ready", async () => {
