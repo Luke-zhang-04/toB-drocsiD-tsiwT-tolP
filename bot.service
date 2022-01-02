@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=ubuntu
-ExecStart=node /home/ubuntu/Documents/assassin/delete.mjs
+ExecStart=node --experimental-vm-modules --es-module-specifier-resolution=node /home/ubuntu/Documents/assassin/index.js
 
 [Install]
 WantedBy=multi-user.target

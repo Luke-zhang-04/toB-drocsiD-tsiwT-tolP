@@ -1,23 +1,9 @@
-import "./dotenv.mjs"
-import Discord from "discord.js"
+import {botId} from "../globals"
 
-const botId = "922575933515395092"
+export const onMessageCreate = undefined
 
-const client = new Discord.Client({
-    intents: ["DIRECT_MESSAGES", "GUILDS", "GUILD_MESSAGES", "GUILD_PRESENCES", "GUILD_MEMBERS"],
-})
-
-client.login(process.env.AUTHTOKEN)
-
-client.on("messageCreate", (message) => {
-    if (message.author.id === botId) {
-        if (message.content.includes("Did you think I would @ everyone?")) {
-            message.reply("Ok, I'll do it for you. @everyone")
-        }
-    }
-})
-
-client.on("messageUpdate", async (message) => {
+/** @param {{[key: string]: import('discord.js').Message}} message */
+export const onMessageUpdate = async (message) => {
     if (message.author.id === botId) {
         const messageContent = (await message.fetch(true)).content
 
@@ -44,18 +30,4 @@ client.on("messageUpdate", async (message) => {
             }
         }
     }
-})
-
-client.on("ready", () => {
-    client.user?.setPresence({
-        status: "online",
-        activities: [
-            {
-                name: "with your mom",
-                type: "PLAYING",
-            },
-        ],
-    })
-
-    console.log("Bot is online")
-})
+}

@@ -1,12 +1,18 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@discordjs/builders': ^0.11.0
+  '@discordjs/rest': ^0.2.0-canary.0
   '@luke-zhang-04/utils': github:luke-zhang-04/utils#semver:^1.7.0
+  discord-api-types: ^0.26.1
   discord.js: ^13.5.0
   dotenv: ^10.0.0
 
 dependencies:
+  '@discordjs/builders': 0.11.0
+  '@discordjs/rest': 0.2.0-canary.0
   '@luke-zhang-04/utils': github.com/luke-zhang-04/utils/a2388018dff0b500085405203a99956bab7666c5
+  discord-api-types: 0.26.1
   discord.js: 13.5.0
   dotenv: 10.0.0
 
@@ -17,10 +23,15 @@ packages:
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       '@sindresorhus/is': 4.2.0
-      discord-api-types: 0.26.0
+      discord-api-types: 0.26.1
       ts-mixer: 6.0.0
       tslib: 2.3.1
       zod: 3.11.6
+    dev: false
+
+  /@discordjs/collection/0.3.2:
+    resolution: {integrity: sha512-dMjLl60b2DMqObbH1MQZKePgWhsNe49XkKBZ0W5Acl5uVV43SN414i2QfZwRI7dXAqIn8pEWD2+XXQFn9KWxqg==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dev: false
 
   /@discordjs/collection/0.4.0:
@@ -28,8 +39,26 @@ packages:
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dev: false
 
+  /@discordjs/rest/0.2.0-canary.0:
+    resolution: {integrity: sha512-jOxz1aqTEzn9N0qaJcZbHz6FbA0oq+vjpXUKkQzgfMihO6gC+kLlpRnFqG25T/aPYbjaR1UM/lGhrGBB1dutqg==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      '@discordjs/collection': 0.3.2
+      '@sapphire/async-queue': 1.1.9
+      '@sapphire/snowflake': 3.0.0
+      discord-api-types: 0.25.2
+      form-data: 4.0.0
+      node-fetch: 2.6.6
+      tslib: 2.3.1
+    dev: false
+
   /@sapphire/async-queue/1.1.9:
     resolution: {integrity: sha512-CbXaGwwlEMq+l1TRu01FJCvySJ1CEFKFclHT48nIfNeZXaAAmmwwy7scUKmYHPUa3GhoMp6Qr1B3eAJux6XgOQ==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dev: false
+
+  /@sapphire/snowflake/3.0.0:
+    resolution: {integrity: sha512-YVYXvpWe8fVs2P9mvvsMXByXCcSPcsgUhuKwA+SSlJk1VO7EW1vWjlgGozGj0tPOhsuaeAj1EjPbkCmNKiSRLA==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
     dev: false
 
@@ -71,8 +100,13 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: false
 
-  /discord-api-types/0.26.0:
-    resolution: {integrity: sha512-bnUltSHpQLzTVZTMjm+iNgVhAbtm5oAKHrhtiPaZoxprbm1UtuCZCsG0yXM61NamWfeSz7xnLvgFc50YzVJ5cQ==}
+  /discord-api-types/0.25.2:
+    resolution: {integrity: sha512-O243LXxb5gLLxubu5zgoppYQuolapGVWPw3ll0acN0+O8TnPUE2kFp9Bt3sTRYodw8xFIknOVxjSeyWYBpVcEQ==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /discord-api-types/0.26.1:
+    resolution: {integrity: sha512-T5PdMQ+Y1MEECYMV5wmyi9VEYPagEDEi4S0amgsszpWY0VB9JJ/hEvM6BgLhbdnKky4gfmZEXtEEtojN8ZKJQQ==}
     engines: {node: '>=12'}
     dev: false
 
@@ -85,7 +119,7 @@ packages:
       '@sapphire/async-queue': 1.1.9
       '@types/node-fetch': 2.5.12
       '@types/ws': 8.2.2
-      discord-api-types: 0.26.0
+      discord-api-types: 0.26.1
       form-data: 4.0.0
       node-fetch: 2.6.6
       ws: 8.4.0
