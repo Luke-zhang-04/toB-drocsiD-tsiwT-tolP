@@ -31,7 +31,7 @@ client.on("messageCreate", async (message) => {
                         "Ok, I'll do it for you. @everyone",
                     )
                 }
-            }, 10_000)
+            }, 5000)
         } else {
             if (message.deletable) {
                 try {
