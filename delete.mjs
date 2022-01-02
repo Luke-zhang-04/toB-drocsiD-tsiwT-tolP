@@ -15,7 +15,7 @@ client.login(process.env.AUTHTOKEN)
 const messageMap = {}
 
 client.on("messageUpdate", async (message) => {
-    if (message.deletable) {
+    if (message.author.id === botId && message.deletable) {
         try {
             await Promise.allSettled([message.delete(), messageMap[message.id]?.delete()])
 
