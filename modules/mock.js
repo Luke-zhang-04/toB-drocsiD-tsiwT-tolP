@@ -15,7 +15,7 @@ export const onMessageUpdate = async (message) => {
                     `No, ${response
                         .replace(/not /giu, "")
                         .replace(
-                            /(are|is|am)/iu,
+                            / (are|is|am) /iu,
                             "**$1**",
                         )}, ThE tRuTh wAs RiGhT iN fRoNt Of YoU tHe WhOlE tImE...`,
                 )

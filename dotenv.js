@@ -1,8 +1,5 @@
 // __dirname in esm
 import dotenv from "dotenv"
-import {dirname} from "path"
-import {fileURLToPath} from "url"
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import {__dirname} from "./globals"
 
 dotenv.config({path: `${__dirname}/.env`})

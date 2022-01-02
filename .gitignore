@@ -121,3 +121,4 @@ dist
 # misc
 .DS_Store
 .env
+config.json

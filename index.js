@@ -1,10 +1,12 @@
 import "./dotenv"
+import * as fs from "fs"
 import Discord from "discord.js"
 import {REST} from "@discordjs/rest"
 import {Routes} from "discord-api-types/v9"
 import {SlashCommandBuilder} from "@discordjs/builders"
 import modes from "./modules"
 import {myId} from "./globals"
+import {__dirname} from "./globals"
 
 const commands = [
     new SlashCommandBuilder()
@@ -16,9 +18,9 @@ const commands = [
                 .setDescription("Change bot mode")
                 .setRequired(true)
                 .addChoices([
-                    ["mock", "Mock Best Bot"],
-                    ["delete", "Delete all messages from Best Bot"],
-                    ["off", "Turn me off; I can be rather annoying"],
+                    ["mock", "mock"],
+                    ["delete", "delete"],
+                    ["off", "off"],
                 ]),
         )
         .toJSON(),
@@ -33,15 +35,45 @@ client.login(process.env.AUTHTOKEN)
 
 let mode = "mock"
 
-client.on("messageUpdate", modes[mode]?.onMessageUpdate ?? (() => {}))
+/** @returns {import("discord.js").ActivitiesOptions | undefined} */
+const getStatusFromMode = () => {
+    switch (mode) {
+        case "mock":
+            return {
+                type: "COMPETING",
+                name: 'in the "most annoying" competition with Best Bot',
+            }
+        case "off":
+            return undefined
+        case "delete":
+            return {
+                type: "WATCHING",
+                name: "Best Bot's messages disappear",
+            }
+        default:
+            return undefined
+    }
+}
 
-client.on("messageCreate", modes[mode]?.onMessageCreate ?? (() => {}))
+client.on("messageUpdate", async () => {
+    await modes[mode]?.onMessageUpdate?.()
+})
+
+client.on("messageCreate", async () => {
+    await modes[mode]?.onMessageCreate?.()
+})
 
 client.on("ready", async () => {
+    try {
+        mode = JSON.parse(fs.readFileSync(`${__dirname}/config.json`, "utf-8")).mode ?? "mock"
+    } catch (err) {
+        console.log(err)
+    }
+
     client.user?.setPresence({
         status: "online",
         activities: [
-            {
+            getStatusFromMode() ?? {
                 name: "with your mom",
                 type: "PLAYING",
             },
@@ -66,8 +98,26 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.member.permissions.has("ADMINISTRATOR") || interaction.user.id === myId) {
             const selectedMode = interaction.options.getString("mode")
 
-            if (selectedMode in modes) {
+            if (Object.keys(modes).includes(selectedMode)) {
                 mode = selectedMode
+
+                client.user?.setPresence({
+                    status: mode === "off" ? "idle" : "online",
+                    activities: [
+                        getStatusFromMode() ?? {
+                            type: "PLAYING",
+                            name: "with your mom",
+                        },
+                    ],
+                })
+
+                console.log(__dirname)
+
+                try {
+                    await fs.promises.writeFile(`${__dirname}/config.json`, JSON.stringify({mode}))
+                } catch (err) {
+                    console.log(err)
+                }
 
                 await interaction.reply(`Mode changed to ${mode}`)
             } else {
