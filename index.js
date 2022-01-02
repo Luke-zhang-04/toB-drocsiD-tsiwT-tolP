@@ -18,6 +18,7 @@ const commands = [
                 .addChoices([
                     ["mock", "Mock Best Bot"],
                     ["delete", "Delete all messages from Best Bot"],
+                    ["off", "Turn me off; I can be rather annoying"],
                 ]),
         )
         .toJSON(),
