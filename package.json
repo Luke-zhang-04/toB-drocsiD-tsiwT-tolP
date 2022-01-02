@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"@luke-zhang-04/utils": "github:luke-zhang-04/utils#semver:^1.7.0",
+		"discord.js": "^13.5.0",
+		"dotenv": "^10.0.0"
+	}
+}
