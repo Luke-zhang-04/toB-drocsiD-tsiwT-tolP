@@ -25,7 +25,13 @@ client.on("messageUpdate", async (message) => {
 client.on("messageCreate", async (message) => {
     if (message.author.id === botId) {
         if (message.content.startsWith("Did you think I would @ everyone?")) {
-            messageMap[message.id] = await message.reply("Ok, I'll do it for you. @everyone")
+            setTimeout(async () => {
+                if (message.editedTimestamp !== message.createdTimestamp) {
+                    messageMap[message.id] = await message.reply(
+                        "Ok, I'll do it for you. @everyone",
+                    )
+                }
+            }, 2500)
         } else {
             if (message.deletable) {
                 try {
