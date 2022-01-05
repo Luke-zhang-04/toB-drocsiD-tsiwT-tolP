@@ -41,7 +41,7 @@ const getStatusFromMode = () => {
         case "mock":
             return {
                 type: "COMPETING",
-                name: 'in the "most annoying" competition with Best Bot',
+                name: 'the "most annoying" competition with Best Bot',
             }
         case "off":
             return undefined
