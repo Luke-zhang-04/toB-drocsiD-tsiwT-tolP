@@ -16,7 +16,7 @@ export const onMessageUpdate = async (message) => {
                         .replace(/not /giu, "")
                         .replace(
                             / (are|is|am) /iu,
-                            "**$1**",
+                            " **$1** ",
                         )}, ThE tRuTh wAs RiGhT iN fRoNt Of YoU tHe WhOlE tImE...`,
                 )
             } else {
