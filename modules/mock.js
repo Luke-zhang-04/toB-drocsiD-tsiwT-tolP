@@ -2,9 +2,9 @@ import {botId} from "../globals"
 
 export const onMessageCreate = undefined
 
-/** @param {{[key: string]: import('discord.js').Message}} message */
+/** @param {import('discord.js').Message} message */
 export const onMessageUpdate = async (message) => {
-    if (message.author.id === botId) {
+    if (message.author.id === botId && message.mentions.repliedUser.id !== "926600995042103397") {
         const messageContent = (await message.fetch(true)).content
 
         if (messageContent.includes("Note: plz give")) {
