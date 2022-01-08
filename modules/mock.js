@@ -1,4 +1,5 @@
-import {botId, myId} from "../globals"
+import {botId} from "../globals"
+import {getMessageReply} from "../utils"
 
 const mockMessage = "tHe TrUtH wAs RiGhT iN fRoNt Of YoU tHe WhOlE tImE..."
 
@@ -7,14 +8,12 @@ export const onMessageUpdate = async (message) => {
     if (message.author.id === botId) {
         const messageContent = (await message.fetch(true)).content
 
-        if (messageContent.includes(myId) && messageContent.includes("Watch him break")) {
+        if (getMessageReply(getMessageReply(message))?.author.id === botId) {
             if (message.deletable) {
                 await message.delete()
             }
         } else if (
-            message.channel.messages.cache.find(
-                (_message) => _message.id === message.reference?.messageId,
-            )?.author.id !== "926600995042103397" &&
+            getMessageReply(message)?.author.id !== "926600995042103397" &&
             messageContent.includes("Note: plz give")
         ) {
             const randomNumber = Math.random()
