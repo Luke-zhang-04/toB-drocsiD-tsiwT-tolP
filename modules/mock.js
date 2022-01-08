@@ -1,20 +1,22 @@
-import {botId} from "../globals"
+import {botId, myId} from "../globals"
 
 const mockMessage = "tHe TrUtH wAs RiGhT iN fRoNt Of YoU tHe WhOlE tImE..."
 
-export const onMessageCreate = undefined
-
 /** @param {import('discord.js').Message} message */
 export const onMessageUpdate = async (message) => {
-    if (
-        message.author.id === botId &&
-        message.channel.messages.cache.find(
-            (_message) => _message.id === message.reference?.messageId,
-        )?.author.id !== "926600995042103397"
-    ) {
+    if (message.author.id === botId) {
         const messageContent = (await message.fetch(true)).content
 
-        if (messageContent.includes("Note: plz give")) {
+        if (messageContent.includes(myId) && messageContent.includes("Watch him break")) {
+            if (message.deletable) {
+                await message.delete()
+            }
+        } else if (
+            message.channel.messages.cache.find(
+                (_message) => _message.id === message.reference?.messageId,
+            )?.author.id !== "926600995042103397" &&
+            messageContent.includes("Note: plz give")
+        ) {
             const randomNumber = Math.random()
 
             if (randomNumber < 0.5) {
@@ -24,7 +26,7 @@ export const onMessageUpdate = async (message) => {
                     await message.reply(
                         `No, ${response
                             .replace(/not /giu, "")
-                            .replace(/ (are|is|am) /iu, " **$1** ")}, ${mockMessage}`,
+                            .replace(/ (are|is|am|was|were) /iu, " **$1** ")}, ${mockMessage}`,
                     )
                 } else {
                     const content = response.split(" ")
@@ -54,3 +56,9 @@ export const onMessageUpdate = async (message) => {
         }
     }
 }
+
+export const onMessageCreate = onMessageUpdate
+
+export const onPresenceUpdate = undefined
+export const onStart = undefined
+export const onFinish = undefined

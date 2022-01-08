@@ -1,17 +1,9 @@
+import {botsChannelId as channelId, botId} from "../globals"
 import Discord from "discord.js"
 import {choice} from "@luke-zhang-04/utils/random.js"
-import dotenv from "dotenv"
 
-const botId = "922575933515395092"
-const channelId = "909649528385314837"
-
-dotenv.config()
-
-const client = new Discord.Client({
-    intents: ["DIRECT_MESSAGES", "GUILDS", "GUILD_MESSAGES", "GUILD_PRESENCES", "GUILD_MEMBERS"],
-})
-
-client.login(process.env.AUTHTOKEN)
+const messageLimit = 1000
+let messageCount = 0
 
 const names = [
     "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnaaaaaaaaaaaaaaaaaaaaaaassssssssssssssssssssssiiiiiiiiiiiiiiiiiiffffffffffffffffffffff",
@@ -39,30 +31,45 @@ const assassinate = async () => {
     /** @type {Discord.TextChannel} */
     const channel = (botChannel ??= await client.channels.fetch(channelId))
 
-    channel.send({content: `${choice(names)} ${message}`})
+    await channel.send({content: `${choice(names)} ${message}`})
+
+    messageCount++
 }
 
 let assassinationInterval
+let startInterval
 
-client.once("ready", () => {
-    console.log("Bot is online!")
-
-    client.user?.setPresence({
-        status: "online",
-        activities: [
-            {
-                name: "with your mom",
-                type: "PLAYING",
-            },
-        ],
-    })
-
-    setInterval(async () => {
+export const onStart = () => {
+    startInterval = setInterval(async () => {
         await checkIfOnline()
 
-        if (isOnline) {
+        if (messageCount > messageLimit) {
+            if (isAssassinating) {
+                isAssassinating = false
+                messageCount = 0
+
+                botChannel?.members
+                    .find((member) => member.id === "497586129973805056")
+                    .send(
+                        "Message limit reached; best bot may have disabled bots or is taking it's sweet time to die",
+                    )
+
+                client.channels.cache
+                    .find((channel) => channel.id === "890682964101435392")
+                    ?.send(
+                        "Message limit reached; <@922575933515395092> may have disabled bots or is taking it's sweet time to die",
+                    )
+            }
+
+            if (assassinationInterval !== undefined) {
+                clearInterval(Number(`${assassinationInterval}`))
+
+                assassinationInterval = undefined
+            }
+        } else if (isOnline) {
             if (!isAssassinating) {
                 isAssassinating = true
+                messageCount = 0
 
                 botChannel?.members
                     .find((member) => member.id === "497586129973805056")
@@ -77,6 +84,7 @@ client.once("ready", () => {
         } else {
             if (isAssassinating) {
                 isAssassinating = false
+                messageCount = 0
 
                 botChannel?.members
                     .find((member) => member.id === "497586129973805056")
@@ -94,10 +102,19 @@ client.once("ready", () => {
             }
         }
     }, 5000)
-})
+}
 
-client.on("presenceUpdate", (_, newPresence) => {
-    if (newPresence.member.id === botId) {
-        isOnline = newPresence.status !== "offline"
-    }
-})
+export const onFinish = () => {
+    clearInterval(Number(`${startInterval}`))
+}
+
+export const onPresenceUpdate = () => {
+    client.on("presenceUpdate", (_, newPresence) => {
+        if (newPresence.member.id === botId) {
+            isOnline = newPresence.status !== "offline"
+        }
+    })
+}
+
+export const onMessageCreate = undefined
+export const onMessageUpdate = undefined

@@ -21,6 +21,7 @@ const commands = [
                     ["mock", "mock"],
                     ["delete", "delete"],
                     ["off", "off"],
+                    ["spam", "spam"],
                 ]),
         )
         .toJSON(),
@@ -50,6 +51,11 @@ const getStatusFromMode = () => {
                 type: "WATCHING",
                 name: "Best Bot's messages disappear",
             }
+        case "spam":
+            return {
+                type: "WATCHING",
+                name: "Best bot run out of RAM",
+            }
         default:
             return undefined
     }
@@ -61,6 +67,10 @@ client.on("messageUpdate", async (...args) => {
 
 client.on("messageCreate", async (...args) => {
     await modes[mode]?.onMessageCreate?.(...args)
+})
+
+client.on("presenceUpdate", async (...args) => {
+    await modes[mode]?.onPresenceUpdate?.(...args)
 })
 
 client.on("ready", async () => {
@@ -82,6 +92,8 @@ client.on("ready", async () => {
 
     console.log("Bot is online")
 
+    await modes[mode]?.onStart?.()
+
     try {
         await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
             body: commands,
@@ -99,6 +111,7 @@ client.on("interactionCreate", async (interaction) => {
             const selectedMode = interaction.options.getString("mode")
 
             if (Object.keys(modes).includes(selectedMode)) {
+                modes[mode]?.onFinish?.()
                 mode = selectedMode
 
                 client.user?.setPresence({
@@ -111,8 +124,6 @@ client.on("interactionCreate", async (interaction) => {
                     ],
                 })
 
-                console.log(__dirname)
-
                 try {
                     await fs.promises.writeFile(`${__dirname}/config.json`, JSON.stringify({mode}))
                 } catch (err) {
@@ -120,6 +131,7 @@ client.on("interactionCreate", async (interaction) => {
                 }
 
                 await interaction.reply(`Mode changed to ${mode}`)
+                modes[mode]?.onStart?.()
             } else {
                 await interaction.reply("Not a valid mode")
             }
