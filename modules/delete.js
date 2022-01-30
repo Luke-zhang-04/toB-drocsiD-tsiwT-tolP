@@ -1,11 +1,11 @@
-import {botId} from "../globals"
+import {blacklist, botId} from "../globals"
 
 /** @type {{[key: string]: import('discord.js').Message}} */
 const messageMap = {}
 
 /** @param {{[key: string]: import('discord.js').Message}} message */
 export const onMessageUpdate = async (message) => {
-    if (message.author.id === botId && message.deletable) {
+    if (blacklist.includes(message.author.id) && message.deletable) {
         try {
             await Promise.allSettled([message.delete(), messageMap[message.id]?.delete()])
 
